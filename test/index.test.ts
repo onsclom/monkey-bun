@@ -1,5 +1,5 @@
 import { expect, test } from "bun:test";
-import { tokenize } from "./index";
+import { tokenize } from "../index";
 
 test("can tokenize", () => {
   expect(tokenize(`=+(){},`)).toEqual([
