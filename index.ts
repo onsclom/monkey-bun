@@ -1,25 +1,6 @@
 // TODO: make this more strict
 // for ex, assign will always have value of "="
-type Token = {
-  type:
-    | "ILLEGAL"
-    | "EOF"
-    | "IDENT"
-    | "INT"
-    | "ASSIGN"
-    | "PLUS"
-    | "COMMA"
-    | "SEMICOLON"
-    | "LPAREN"
-    | "RPAREN"
-    | "LBRACE"
-    | "RBRACE"
-    | "FUNCTION"
-    | "LET";
-  value: string;
-};
-
-const singleCharTokens: { [key: string]: Token["type"] } = {
+const singleCharTokens = {
   "=": "ASSIGN",
   "+": "PLUS",
   ",": "COMMA",
@@ -30,35 +11,38 @@ const singleCharTokens: { [key: string]: Token["type"] } = {
   "}": "RBRACE",
 };
 
-const keywords: { [key: string]: Token["type"] } = {
+const multiCharTokens = {
   fn: "FUNCTION",
   let: "LET",
 };
 
 const whitespace = [" ", "\t", "\r", "\n"];
 
+type SingleCharTable = typeof singleCharTokens;
+type MultiCharTable = typeof multiCharTokens;
+type Token = {
+  type: SingleCharTable[keyof SingleCharTable] | MultiCharTable[keyof MultiCharTable];
+  value: string;
+};
+
 export function tokenize(progam: string) {
   let index = 0;
   let tokens: Token[] = [];
 
   while (index < progam.length) {
-    while (whitespace.includes(progam[index])) {
-      index++;
-    }
+    while (whitespace.includes(progam[index])) index++;
     const cur = progam[index];
 
-    if (singleCharTokens[cur]) {
-      tokens.push({ type: singleCharTokens[cur], value: cur });
+    if (cur in singleCharTokens) {
+      tokens.push({ type: singleCharTokens[cur as keyof SingleCharTable], value: cur });
       index++;
       continue;
     }
 
-    const startingKeyword = Object.keys(keywords).find((keyword) =>
-      progam.slice(index).startsWith(keyword),
-    );
+    const startingKeyword = Object.keys(multiCharTokens).find((keyword) => progam.slice(index).startsWith(keyword));
     if (startingKeyword) {
       tokens.push({
-        type: keywords[startingKeyword].slice().toUpperCase() as Token["type"],
+        type: multiCharTokens[startingKeyword as keyof MultiCharTable].slice().toUpperCase() as Token["type"],
         value: startingKeyword,
       });
       index += startingKeyword.length;
