@@ -1,15 +1,9 @@
 # monkey-bun
 
-To install dependencies:
+Following along with [Writing an Interpreter in Go](https://interpreterbook.com/), but with TypeScript using Bun.
+
+## Tests
 
 ```bash
-bun install
+bun test
 ```
-
-To run:
-
-```bash
-bun run index.ts
-```
-
-This project was created using `bun init` in bun v1.0.30. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.
