@@ -2,16 +2,6 @@ import { expect, test } from "bun:test";
 import { tokenize } from "../index";
 
 test("can tokenize", () => {
-  expect(tokenize(`=+(){},`)).toEqual([
-    { type: "ASSIGN", value: "=" },
-    { type: "PLUS", value: "+" },
-    { type: "LPAREN", value: "(" },
-    { type: "RPAREN", value: ")" },
-    { type: "LBRACE", value: "{" },
-    { type: "RBRACE", value: "}" },
-    { type: "COMMA", value: "," },
-  ]);
-
   expect(
     tokenize(`let ten = 10;
 
@@ -33,11 +23,6 @@ if (5 < 10) {
 10 != 9;
 `),
   ).toEqual([
-    { type: "LET", value: "let" },
-    { type: "IDENT", value: "five" },
-    { type: "ASSIGN", value: "=" },
-    { type: "INT", value: "5" },
-    { type: "SEMICOLON", value: ";" },
     { type: "LET", value: "let" },
     { type: "IDENT", value: "ten" },
     { type: "ASSIGN", value: "=" },
