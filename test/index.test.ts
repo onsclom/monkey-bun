@@ -1,5 +1,5 @@
 import { expect, test } from "bun:test";
-import { tokenize } from "../index";
+import { tokenize, parse } from "../index";
 
 test("can tokenize", () => {
   expect(
@@ -92,5 +92,39 @@ if (5 < 10) {
     { type: "INT", value: "9" },
     { type: "SEMICOLON", value: ";" },
     { type: "EOF", value: "" },
+  ]);
+});
+
+test("can parse", () => {
+  const mathTokens = tokenize("1 + 2 * 3 - 4;");
+  expect(parse(mathTokens)).toEqual([
+    {
+      type: "BINARY_EXPRESSION",
+      operator: "-",
+      left: {
+        type: "BINARY_EXPRESSION",
+        operator: "+",
+        left: {
+          type: "INT_LITERAL",
+          value: 1,
+        },
+        right: {
+          type: "BINARY_EXPRESSION",
+          operator: "*",
+          left: {
+            type: "INT_LITERAL",
+            value: 2,
+          },
+          right: {
+            type: "INT_LITERAL",
+            value: 3,
+          },
+        },
+      },
+      right: {
+        type: "INT_LITERAL",
+        value: 4,
+      },
+    },
   ]);
 });
