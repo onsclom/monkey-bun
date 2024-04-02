@@ -101,3 +101,49 @@ export function tokenize(progam: string) {
 
   return tokens;
 }
+
+// PARSE LOGIC
+
+type IntLiteral = {
+  type: "INT_LITERAL";
+  value: number;
+};
+
+type StringLiteral = {
+  type: "STRING_LITERAL";
+  value: string;
+};
+
+type UnaryExpression = {
+  type: "UNARY_EXPRESSION";
+  operator: string;
+  right: Expression;
+};
+
+type BinaryExpression = {
+  type: "BINARY_EXPRESSION";
+  operator: string;
+  left: Expression;
+  right: Expression;
+};
+
+type Expression =
+  | IntLiteral
+  | StringLiteral
+  | UnaryExpression
+  | BinaryExpression;
+
+type Statement = Expression;
+
+export function parse(tokens: Token[]): Statement[] {
+  let index = 0;
+  let statements: Statement[] = [];
+
+  while (index < tokens.length) {
+    const { statement, error } = parseStatement();
+    if (error) {
+    }
+  }
+
+  return statements;
+}
